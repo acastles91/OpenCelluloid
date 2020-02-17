@@ -1,0 +1,3 @@
+ofxBlackmagic
+ofxGuiExtended
+ofxSimpleSerial
