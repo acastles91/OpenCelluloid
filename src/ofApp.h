@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "ofxGuiExtended.h"
 #include "ofxBlackMagic.h"
-#include "ofxSimpleSerial.h"
+#include "ofxSerial.h"
 
 //#include "ofxGui.h"
 
@@ -31,7 +31,8 @@ public:
                              *containerButtons,
                              *markersContainer,
                              *markersSubContainer,
-                             *shutter;      //check
+                             *shutter,
+                             *notificationsContainer;      //check
                           //   *stabContainer;
 
          ofxGuiGroup        *controlGroup,
@@ -40,8 +41,9 @@ public:
                             *speedControlGroup,
                             *markersGroup,
                             *markersSubGroup,
-                            *filmToggles;       //check
-                    //     *stabGroup;
+                            *filmToggles,      //check
+                            *notificationsGroup;
+         //     *stabGroup;
 
          ofParameterGroup    controlParameters,
                              speedParameters,
@@ -57,13 +59,15 @@ public:
                              homing,
                              drawMarkersB;  //check drawMarkersB
 
+
          ofxGuiToggle           *backwardB,     //check
                                 *captureB;//check
 
 
          ofParameter<string>    homingStatus,
                                 path3,
-                                textfieldVal; //check
+                                textfieldVal, //check
+                                notificationString;
 
          ofParameter<bool>       startStopParameter,
                                  directionParameter,
@@ -128,10 +132,14 @@ public:
          //ofxSimpleSerial
          //--------------------------------------------------------------
 
-         ofxSimpleSerial serial;
+
+         ofSerial   serial;
+         ofx::IO::SerialDevice device;
+         //ofxSimpleSerial serial;
          std::string  message;
          bool    requestRead;
          bool    remember;
+         bool    incomingRequest;
 
     //     //ofxCv
     //     //--------------------------------------------------------------
@@ -184,6 +192,11 @@ public:
      void directionSwitch(bool &);
      void capture(bool &);
      void drawMarkers();
+
+     //Serial
+
+     void setupSerial();
+     void updateSerial();
 
 
 

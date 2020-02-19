@@ -12,6 +12,7 @@ Project{
         name: { return FileInfo.baseName(sourceDirectory) }
 
         files: [
+            "src/serial.cpp",
             'src/camera.cpp',
             'src/gui.cpp',
             'src/main.cpp',
@@ -22,7 +23,9 @@ Project{
         of.addons: [
             'ofxBlackmagic',
             'ofxGuiExtended',
-            'ofxSimpleSerial',
+            'ofxSerial',
+            'ofxPoco',
+            'ofxIO'
         ]
 
         // This project is using addons.make to include the addons

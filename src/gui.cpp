@@ -9,6 +9,7 @@ void ofApp::setupGui(){
     ofSetFrameRate(120);
     ofBackground(235, 235, 235);
     margin = 50;
+    notificationString = "Starting";
 
 //    //ofxGuiExtended
 //    //--------------------------------------------------------------
@@ -86,7 +87,13 @@ void ofApp::setupGui(){
     markersGroup->setShowHeader(0);
     //markersGroup->setWidth(speedControlGroup->getWidth());
 
-//    //Stabilization panel
+//Notifications
+//--------------------------------------------------------------
+
+
+    notificationsGroup = speedControlPanel->addGroup("Notifications");
+    notificationsGroup->add(notificationString);
+//    //Stabilization paneln
 //    //--------------------------------------------------------------
 
     //    stabPanel = gui2.addPanel();
@@ -113,6 +120,7 @@ void ofApp::setupGui(){
     projectPanel->setWidth(markersGroup->getWidth());
     projectGroup->setWidth(projectPanel->getWidth());
     speedControlPanel->setWidth(projectPanel->getWidth());
+
 
 //    //Speed selector
 //    //--------------------------------------------------------------
@@ -267,12 +275,21 @@ void ofApp::startStop(bool &)
 {
     startStopBool = !startStopBool;
     cout << "Backward" << std::endl;
+    std::string code{};
+
     if (!startStopBool){
         startStopParameter.setName("Start");
+        code = "d";
     }else{
         startStopParameter.setName("Stop");
+        code = "b";
     }
-    serial.writeString("c");
+    ofx::IO::ByteBuffer codeBuffer(code);
+    //
+
+    //device.writeBytes(codeBuffer);
+    device.writeBytes(codeBuffer);
+    codeBuffer.empty();
 
 }
 
@@ -281,13 +298,27 @@ void ofApp::startStop(bool &)
 void ofApp::directionSwitch(bool &)
 {
     directionBool = !directionBool;
-    cout << "Backward" << std::endl;
+    std::string code{};
+
     if (!directionBool){
         directionParameter.setName("Backward");
     }else{
-        directionParameter.setName("Forward");
+        startStopParameter.setName("Forward");
     }
-    serial.writeString("c");
+    code = "q";
+    ofx::IO::ByteBuffer codeBuffer(code);
+
+    device.writeBytes(codeBuffer);
+    codeBuffer.empty();
+
+
+//    cout << "Backward" << std::endl;
+//    if (){
+//
+//    }else{
+//        directionParameter.setName("Forward");
+//    }
+//    serial.writeString("c");
 
 }
 
@@ -295,17 +326,22 @@ void ofApp::directionSwitch(bool &)
 
 void ofApp::capture(bool &)
 {
-//    //captureBool = !captureBool;
-//    recording = !recording;
-//    if(cam.recorder.isThreadRunning()){
-//        cam.recorder.stopThread();
-//    } else {
-//        //recorder.startThread(false, true);
-//        cam.recorder.startThread();
-//    }
-//    setupRecorder();
-//    cout << "Capture" << std::endl;
-//    //serial.writeString("1");
+    captureBool = !captureBool;
+    recording = !recording;
+    std::string code{};
+    if(cam.recorder.isThreadRunning()){
+        cam.recorder.stopThread();
+    } else {
+        cam.recorder.startThread();
+    }
+    setupRecorder();
+    cout << "Capture" << std::endl;
+    code = "t";
+    ofx::IO::ByteBuffer codeBuffer(code);
+
+    //device.writeBytes(codeBuffer);
+    device.writeBytes(codeBuffer);
+    codeBuffer.empty();
 
 }
 

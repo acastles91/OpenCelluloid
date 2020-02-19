@@ -7,6 +7,7 @@ void ofApp::setup(){
 
     setupGui();
     setupCamera();
+    setupSerial();
 }
 
 //--------------------------------------------------------------
@@ -15,7 +16,15 @@ void ofApp::update(){
     if (markersBool){
             drawMarkers();
         }
+    updateSerial();
 
+   //
+    if (recording){
+        if (serial.readByte() == 0){
+            captureFrame();
+        }
+
+    }
 
 }
 
@@ -27,7 +36,7 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){ 
         if(key == ' '){
-            //captureFrame();
+            captureFrame();
         }
         if(key == 'f'){
             ofSetFullscreen(true);
