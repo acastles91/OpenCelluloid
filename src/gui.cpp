@@ -44,12 +44,27 @@ void ofApp::setupGui(){
 //    //speed Control Panel
 //    //--------------------------------------------------------------
 
-    speedControlPanel = gui2.addPanel();
-    speedControlPanel->setShowHeader(false);
-    speedControlPanel->setBackgroundColor(ofColor::darkGray);
-    speedControlPanel->setPosition(projectPanel->getX(), projectPanel->getHeight() + 50);
+//    speedControlPanel = gui2.addPanel();
+//    speedControlPanel->setShowHeader(false);
+//    speedControlPanel->setBackgroundColor(ofColor::darkGray);
 
-    speedControlGroup = speedControlPanel->addGroup(speedControlParameters);
+
+//    speedControlGroup = speedControlPanel->addGroup(speedControlParameters);
+//    speedControlGroup->setShowHeader(0);
+//    speedControlGroup->setConfig(ofJson({{"type", "fullsize"}, {"direction", "vertical"}}));
+
+//    speedControlContainer = speedControlGroup->addContainer();
+//    speedControlContainer->setBackgroundColor(ofColor::lightGray);
+//    speedControlContainer->add(speed1.set("Speed 1", 0.5, 0.1, 1), ofJson({{"precision", 1}}));
+//    speedControlContainer->add(speed2.set("Speed 2", 0.5, 0.1, 1), ofJson({{"precision", 1}}));
+
+
+    //speedControlPanel = gui2.addPanel();
+    //speedControlPanel->setShowHeader(false);
+    //speedControlPanel->setBackgroundColor(ofColor::darkGray);
+
+
+    speedControlGroup = projectPanel->addGroup(speedControlParameters);
     speedControlGroup->setShowHeader(0);
     speedControlGroup->setConfig(ofJson({{"type", "fullsize"}, {"direction", "vertical"}}));
 
@@ -62,7 +77,8 @@ void ofApp::setupGui(){
 //    //markers group
 //    //--------------------------------------------------------------
 
-    markersGroup = speedControlPanel->addGroup();
+//    markersGroup = speedControlPanel->addGroup();
+    markersGroup = projectPanel->addGroup();
     markersSubContainer = markersGroup->addContainer();
     markersSubContainer->add(drawMarkersParameter, ofJson({{"type", "fullsize"}, {"text-align", "center"}}));
     //markersSubContainer->setWidth(containerLeft->getWidth());
@@ -91,7 +107,10 @@ void ofApp::setupGui(){
 //--------------------------------------------------------------
 
 
-    notificationsGroup = speedControlPanel->addGroup("Notifications");
+//    notificationsGroup = speedControlPanel->addGroup("Notifications");
+    notificationsGroup = projectPanel->addGroup("Notifications");
+    //notificationsGroup->isChild(projectPanel);
+    notificationsGroup->setShowHeader(0);
     notificationsGroup->add(notificationString);
 //    //Stabilization paneln
 //    //--------------------------------------------------------------
@@ -118,8 +137,15 @@ void ofApp::setupGui(){
 
 
     projectPanel->setWidth(markersGroup->getWidth());
+    projectPanel->setHeight(ofGetHeight() - 2 * margin);
     projectGroup->setWidth(projectPanel->getWidth());
-    speedControlPanel->setWidth(projectPanel->getWidth());
+    notificationsGroup->setWidth(projectGroup->getWidth());
+    markersGroup->setWidth(projectGroup->getWidth());
+    speedControlGroup->setWidth(projectGroup->getWidth());
+    //speedControlPanel->setPosition(projectGroup->getX() + margin, projectGroup->getHeight() + margin + 50);
+    //speedControlPanel->setWidth(projectPanel->getWidth());
+    notificationsGroup->setHeight(projectPanel->getHeight() - notificationsGroup->getY());
+
 
 
 //    //Speed selector
@@ -277,19 +303,29 @@ void ofApp::startStop(bool &)
     cout << "Backward" << std::endl;
     std::string code{};
 
+//    if (!startStopBool){
+//        startStopParameter.setName("Start");
+//        code = "d";
+//    }else{
+//        startStopParameter.setName("Stop");
+//        code = "b";
+//    }
+
     if (!startStopBool){
         startStopParameter.setName("Start");
-        code = "d";
     }else{
         startStopParameter.setName("Stop");
-        code = "b";
     }
-    ofx::IO::ByteBuffer codeBuffer(code);
-    //
 
-    //device.writeBytes(codeBuffer);
-    device.writeBytes(codeBuffer);
-    codeBuffer.empty();
+    if (!incomingRequest){
+        code = 'z';
+        ofx::IO::ByteBuffer codeBuffer(code);
+        //
+
+        //device.writeBytes(codeBuffer);
+        device.writeBytes(codeBuffer);
+        codeBuffer.empty();
+    }
 
 }
 
@@ -303,14 +339,16 @@ void ofApp::directionSwitch(bool &)
     if (!directionBool){
         directionParameter.setName("Backward");
     }else{
-        startStopParameter.setName("Forward");
+        directionParameter.setName("Forward");
     }
-    code = "q";
+
+    if (!incomingRequest){
+    code = 'q';
     ofx::IO::ByteBuffer codeBuffer(code);
 
     device.writeBytes(codeBuffer);
     codeBuffer.empty();
-
+}
 
 //    cout << "Backward" << std::endl;
 //    if (){
@@ -328,20 +366,23 @@ void ofApp::capture(bool &)
 {
     captureBool = !captureBool;
     recording = !recording;
-    std::string code{};
-    if(cam.recorder.isThreadRunning()){
-        cam.recorder.stopThread();
-    } else {
+    if (captureBool){
+        setupRecorder();
         cam.recorder.startThread();
+        }
+    else if(!captureBool)
+        if(cam.recorder.isThreadRunning()){
+        cam.recorder.stopThread();
     }
-    setupRecorder();
-    cout << "Capture" << std::endl;
-    code = "t";
-    ofx::IO::ByteBuffer codeBuffer(code);
+    if (!incomingRequest){
+        std::string code{};
+        code = 't';
+        ofx::IO::ByteBuffer codeBuffer(code);
 
-    //device.writeBytes(codeBuffer);
-    device.writeBytes(codeBuffer);
-    codeBuffer.empty();
+        //device.writeBytes(codeBuffer);
+        device.writeBytes(codeBuffer);
+        codeBuffer.empty();
+    }
 
 }
 

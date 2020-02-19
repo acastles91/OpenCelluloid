@@ -214,7 +214,7 @@ public:
      //Camera
 
      void setupCamera();
-     void setupRecorder();
+     bool setupRecorder();
 
      void updateCamera();
      void drawCamera();

@@ -9,7 +9,7 @@ void ofApp::setupCamera(){
 }
 
 
-void ofApp::setupRecorder(){
+bool ofApp::setupRecorder(){
 
     cam.recorder.setPrefix(ofToDataPath("recording1/frame_")); // this directory must already exist
 
@@ -17,6 +17,7 @@ void ofApp::setupRecorder(){
     cam.recorder.setFormat("tiff"); // png is really slow but high res, bmp is fast but big, jpg is just right
     cam.recorder.setNumberWidth(5);
     ofLog()<< "HEZ!";
+    return true;
 
 }
 
@@ -26,6 +27,7 @@ void ofApp::captureFrame(){
         //framePixels.allocate(cam.getWidth(), cam.getHeight(), OF_PIXELS_RGBA);
 
             cam.recorder.addFrame(cam.getColorPixels());
+            cam.recorder.
             ofLog() << "Frame captured";
 //            buff.begin();
 //            frameTexture = cam.getColorTexture();

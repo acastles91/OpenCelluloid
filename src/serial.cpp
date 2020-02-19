@@ -45,188 +45,129 @@ void ofApp::updateSerial(){
     switch  (code){
 
     case 'a':
-                //Serial.println("Auto reset");
-                //notificationString.set('a');
-                notificationString = ofToString(code);
-//                return Request::auto_reset_request;
-//                prevRequestArg = Request::auto_reset_request;
+                notificationString = "Serial Task, case auto reset \n"
+                                     "a = Auto Reset \n"
+                                     "b = Start Moving Forward \n"
+                                     "c = Start Moving Backward \n"
+                                     "d = Stop \n"
+                                     "e = One Frame \n"
+                                     "f = Hundred Frames \n"
+                                     "g = Loading \n"
+                                     "h = Test \n"
+                                     "i = Test digital \n"
+                                     "j = Test analog \n"
+                                     "k = Encoder Test \n"
+                                     "l = Calibrate Shutter \n"
+                                     "m = Calibrate Sensor \n"
+                                     "n = Read Sensor \n"
+                                     "o = Print Values \n"
+                                     "q = Direction Toggle \n"
+                                     "r = Turn on interrupt \n"
+                                     "s = Turn off interrupt \n"
+                                     "t = Toggle Capture \n"
+                                     "u = Homing \n"
+                                     "v = Test button \n"
+                                     "x = Test LED \n"
+                                     "z = Start stop toggle \n";
+
                 break;
-            case 'b':
-                // Serial.println("Start moving forward");
-                //notificationString.set('b');
-                notificationString = ofToString(code);
+    case 'b':
+        notificationString = "Start moving forward";
+        break;
 
-//                return Request::start_moving_forward_request;
-//                prevRequestArg = Request::start_moving_forward_request;
-                break;
-            case 'c':
-                // Serial.println("Start moving backward");
-                //notificationString.set('c');
-                notificationString = ofToString(code);
+    case 'c':
+        notificationString = "Start moving backward";
+        break;
 
-//                return Request::start_moving_backward_request;
-//                prevRequestArg = Request::start_moving_backward_request;
-                break;
-            case 'd':
-                // Serial.println("Stopping");
-                //notificationString.set('d');
-                notificationString = ofToString(code);
+    case 'd':
+        notificationString = "Stopping";
+        break;
 
-//                return Request::stopping_request;
-//                prevRequestArg = Request::stopping_request;
-                break;
-            case 'e':
-                //Serial.println("One frame");
-                //notificationString.set('e');
-                notificationString = ofToString(code);
+    case 'e':
+        notificationString = "One frame";
+        break;
 
-//                return Request::one_frame_request;
-//                prevRequestArg = Request::one_frame_request;
-                break;
-            case 'f':
-                //Serial.println("Hundred Frames");
-                //notificationString.set('f');
-                notificationString = ofToString(code);
+    case 'f':
+        notificationString = "Hundred Frames";
+        break;
 
-//                return Request::hundred_frames_request;
-//                prevRequestArg = Request::hundred_frames_request;
-                break;
-            case 'g':
-                //Serial.println("Loading");
-                //notificationString.set('g');
-                notificationString = ofToString(code);
+    case 'g':
+        notificationString = "Loading";
+        break;
 
-//                return Request::loading_request;
-//                prevRequestArg = Request::loading_request;
-                break;
-            case 'h':
-                //Serial.println("Test");
-                //notificationString.set('h');
-                notificationString = ofToString(code);
+    case 'h':
+        notificationString = "Test";
+        break;
 
-//                return Request::test_request;
-//                prevRequestArg = Request::test_request;
-                break;
-            case 'i':
-                //Serial.println("Test digital");
-                //notificationString.set('i');
-                notificationString = ofToString(code);
+    case 'i':
+        notificationString = "Test digital";
+        break;
 
-//                return Request::test_digital_request;
-//                prevRequestArg = Request::test_digital_request;
-                break;
-            case 'j':
-                //Serial.println("Test analog");
-                //notificationString.set('j');
-                notificationString = ofToString(code);
+    case 'j':
+        notificationString = "Test analog";
+        break;
 
-//                return Request::test_analog_request;
-//                prevRequestArg = Request::test_analog_request;
-                break;
-            case 'k':
-                //Serial.println("Encoder test");
-                //notificationString.set('k');
-                notificationString = ofToString(code);
+    case 'k':
+        notificationString = "Encoder test";
+        break;
 
-//                return Request::encoder_test_request;
-//                prevRequestArg = Request::encoder_test_request;
-                break;
-            case 'l':
-                //Serial.println("Calibrate shutter");
-                //notificationString.set('l');
-                notificationString = ofToString(code);
+    case 'l':
+        notificationString = "Calibrate shutter";
+        break;
 
-//                return Request::calibrate_shutter_request;
-//                prevRequestArg = Request::calibrate_shutter_request;
-                break;
-            case 'm':
-                //Serial.println("Calibrate sensor");
-                //notificationString.set('m');
-                notificationString = ofToString(code);
+    case 'm':
+        notificationString = "Calibrate sensor";
+        break;
 
-//                return Request::calibrate_sensor_request;
-//                prevRequestArg = Request::calibrate_sensor_request;
-                break;
-            case 'n':
-                //Serial.println("Read sensor");
-                //notificationString.set('n');
-                notificationString = ofToString(code);
+    case 'n':
+        notificationString = "Read sensor";
+        break;
 
-//                return Request::read_sensor_request;
-//                prevRequestArg = Request::read_sensor_request;
-                break;
-            case 'o':
-                //Serial.println("Print values");
-                //notificationString.set('o');
-                notificationString = ofToString(code);
+    case 'o':
+        notificationString = "Print values";
+        break;
 
-//                return Request::print_values_request;
-//                prevRequestArg = Request::print_values_request;
-                break;
-            case 'p':
-                //Serial.println("Test acceleration");
-                //notificationString.set('p');
-                notificationString = ofToString(code);
+    case 'p':
+        notificationString = "Test acceleration";
+        break;
 
-//                return Request::test_acceleration_request;
-//                prevRequestArg = Request::test_acceleration_request;
-                break;
-            case 'q':
-                //Serial.println("Direction Toggle");
-                //notificationString.set('q');
-                notificationString = ofToString(code);
+    case 'q':
+        notificationString = "Direction Toggle";
+        break;
 
-//                return Request::direction_toggle_request;
-//                prevRequestArg = Request::direction_toggle_request;
-                break;
+    case 'r':
+        notificationString = "Turn on interrupt";
+        break;
 
-            case 'r':
-                //Serial.println("Turn on interrupt");
-                //notificationString.set('r');
-                notificationString = ofToString(code);
+    case 's':
+        notificationString = "Turn off interrupt";
+        break;
 
-//                return Request::turn_on_interrupt_request;
-//                prevRequestArg = Request::turn_on_interrupt_request;
-                break;
+    case 't':
+        notificationString = "Toggle Capture";
+        break;
 
-            case 's':
-                //Serial.println("Turn off interrupt");
-                //notificationString.set('s');
-                notificationString = ofToString(code);
+    case 'u':
+        notificationString = "Homing";
+        break;
 
-//                return Request::turn_off_interrupt_request;
-//                prevRequestArg = Request::turn_off_interrupt_request;
-                break;
+    case 'x':
+        notificationString = "LEDS test";
+        break;
 
-            case 't':
-                //Serial.println("Toggle Capture");
-                //notificationString.set('t');
-                notificationString = ofToString(code);
+    case 'z':
+        notificationString = "Start Moving Toggle";
+        break;
 
-//                return Request::capture_toggle_request;
-//                prevRequestArg = Request::capture_toggle_request;
-                break;
-
-            case 'u':
-                //notificationString.set('u');
-//                return Request::homing_request;
-                notificationString = ofToString(code);
-
-//                prevRequestArg = Request::homing_request;
-                break;
-
-            case 'x':
-                //Serial.println("LEDS test");
-                //notificationString.set('x');
-                notificationString = ofToString(code);
-
-//                return Request::test_leds_request;
-//                prevRequestArg = Request::test_leds_request;
-                break;
+    case '0':
+        //notificationString = "Frame";
+        notificationString = "0";
+        captureFrame();
+        break;
         }
     }
     else {
-        notificationString = ofToString("?");
+        incomingRequest = false;
     }
 }
 
