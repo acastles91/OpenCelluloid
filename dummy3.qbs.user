@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.6.1, 2020-02-19T08:42:09. -->
+<!-- Written by QtCreator 4.6.1, 2020-02-20T02:54:05. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -224,6 +224,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qbs.RunConfiguration:dummy3.---Qbs.RC.NameSeparator---dummy3</value>
     <value type="QString" key="Qbs.RunConfiguration.CommandLineArguments"></value>
+    <value type="bool" key="Qbs.RunConfiguration.UseTerminal">false</value>
     <value type="bool" key="Qbs.RunConfiguration.UsingLibraryPaths">true</value>
     <value type="QString" key="Qbs.RunConfiguration.WorkingDirectory"></value>
     <value type="QString" key="Qbs.RunConfiguration.WorkingDirectory.default">/home/antonio/dev/of_v0.11.0_linux64gcc6_release/apps/myApps/dummy3/bin</value>

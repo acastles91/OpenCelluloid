@@ -27,7 +27,7 @@ void ofApp::captureFrame(){
         //framePixels.allocate(cam.getWidth(), cam.getHeight(), OF_PIXELS_RGBA);
 
             cam.recorder.addFrame(cam.getColorPixels());
-            cam.recorder.
+            //cam.recorder.
             ofLog() << "Frame captured";
 //            buff.begin();
 //            frameTexture = cam.getColorTexture();

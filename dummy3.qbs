@@ -18,6 +18,7 @@ Project{
             'src/main.cpp',
             'src/ofApp.cpp',
             'src/ofApp.h',
+
         ]
 
         of.addons: [
@@ -25,7 +26,8 @@ Project{
             'ofxGuiExtended',
             'ofxSerial',
             'ofxPoco',
-            'ofxIO'
+            'ofxIO',
+            //'ofxOpenCelluloid'
         ]
 
         // This project is using addons.make to include the addons
@@ -43,13 +45,22 @@ Project{
         // this flags can be augmented through the following properties:
         of.pkgConfigs: []       // list of additional system pkgs to include
         of.includePaths: []     // include search paths
-        of.cFlags: []           // flags passed to the c compiler
-        of.cxxFlags: []         // flags passed to the c++ compiler
-        of.linkerFlags: []      // flags passed to the linker
+        of.cFlags: ['-std=c++11',
+                    '-Wno-multichar',
+                    '-I',
+                    '-fno-rtti',
+                    '-Wall',
+                    '-g']           // flags passed to the c compiler
+        of.cxxFlags: ['-std=c++0x',
+                      '-pthread']         // flags passed to the c++ compiler
+        of.linkerFlags: ['-lm',
+                         '-ldl',
+                         '-lpthread',
+                         '-lpng']      // flags passed to the linker
         of.defines: []          // defines are passed as -D to the compiler
         // and can be checked with #ifdef or #if in the code
         of.frameworks: []       // osx only, additional frameworks to link with the project
-        of.staticLibraries: []  // static libraries
+        of.staticLibraries: ['/usr/lib/x86_64-linux-gnu/libpng.so']  // static libraries
         of.dynamicLibraries: [] // dynamic libraries
 
         // create a console window when the application start
