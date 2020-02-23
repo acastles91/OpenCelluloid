@@ -23,6 +23,7 @@ public:
                              //*stabPanel;
                              *startStopP,
                              *directionP,
+                             *homingP,
                              *captureP;
 
         ofxGuiContainer      *containerLeft,
@@ -32,7 +33,8 @@ public:
                              *markersContainer,
                              *markersSubContainer,
                              *shutter,
-                             *notificationsContainer;      //check
+                             *projectorNotificationsContainer,
+                             *captureNotificationsContainer;   //check
                           //   *stabContainer;
 
          ofxGuiGroup        *controlGroup,
@@ -67,10 +69,13 @@ public:
          ofParameter<string>    homingStatus,
                                 path3,
                                 textfieldVal, //check
-                                notificationString;
+                                projectorNotificationString,
+                                captureNotificationsString;
+
 
          ofParameter<bool>       startStopParameter,
                                  directionParameter,
+                                 homingParameter,
                                  backwardBool2,     //check
                                  startStopToggle,   //check
                                  captureParameter,
@@ -140,6 +145,8 @@ public:
          bool    requestRead;
          bool    remember;
          bool    incomingRequest;
+         uint8_t serialCode;
+         std::size_t deviceSz;
 
     //     //ofxCv
     //     //--------------------------------------------------------------
@@ -151,6 +158,15 @@ public:
     //                              stabThreshold;
 
 
+    //     //Captura
+    //     //--------------------------------------------------------------
+
+         int framesArrived{};
+         std::string projectName;
+         std::string emptyString;
+         std::string path;
+         bool recorderOk;
+
     //     //Otros objetos, check all
     //     //--------------------------------------------------------------
 
@@ -158,6 +174,7 @@ public:
          ofPixels framePixels;
          ofFbo buff;
          ofTexture frameTexture;
+
 
     //     //funciones básicas
     //     //--------------------------------------------------------------
@@ -190,6 +207,7 @@ public:
      void markersCall(bool &);
      void startStop(bool &);
      void directionSwitch(bool &);
+     void homingToggle(bool &);
      void capture(bool &);
      void drawMarkers();
 

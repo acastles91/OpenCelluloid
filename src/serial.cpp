@@ -17,9 +17,14 @@ void ofApp::setupSerial(){
         // Connect to the first matching device.
         bool success = device.setup(devicesInfo[0], 115200);
 
+        std::string code{};
+        code = 'a';
+        ofx::IO::ByteBuffer codeBuffer(code);
+
         if (success)
         {
             ofLogNotice("ofApp::setup") << "Successfully setup " << devicesInfo[0];
+
         }
         else
         {
@@ -34,141 +39,134 @@ void ofApp::setupSerial(){
 
 void ofApp::updateSerial(){
 
-    uint8_t code;
 
-    if (device.available()){
 
-    incomingRequest = true;
+    std::size_t sz = device.readByte(serialCode);
 
-    std::size_t sz = device.readByte(code);
-
-    switch  (code){
+    switch  (serialCode){
 
     case 'a':
-                notificationString = "Serial Task, case auto reset \n"
-                                     "a = Auto Reset \n"
-                                     "b = Start Moving Forward \n"
-                                     "c = Start Moving Backward \n"
-                                     "d = Stop \n"
-                                     "e = One Frame \n"
-                                     "f = Hundred Frames \n"
-                                     "g = Loading \n"
-                                     "h = Test \n"
-                                     "i = Test digital \n"
-                                     "j = Test analog \n"
-                                     "k = Encoder Test \n"
-                                     "l = Calibrate Shutter \n"
-                                     "m = Calibrate Sensor \n"
-                                     "n = Read Sensor \n"
-                                     "o = Print Values \n"
-                                     "q = Direction Toggle \n"
-                                     "r = Turn on interrupt \n"
-                                     "s = Turn off interrupt \n"
-                                     "t = Toggle Capture \n"
-                                     "u = Homing \n"
-                                     "v = Test button \n"
-                                     "x = Test LED \n"
-                                     "z = Start stop toggle \n";
+//                projectorNotificationString =    "Serial Task, case auto reset \n"
+//                                                 "a = Auto Reset \n"
+//                                                 "b = Start Moving Forward \n"
+//                                                 "c = Start Moving Backward \n"
+//                                                 "d = Stop \n"
+//                                                 "e = One Frame \n"
+//                                                 "f = Hundred Frames \n"
+//                                                 "g = Loading \n"
+//                                                 "h = Test \n"
+//                                                 "i = Test digital \n"
+//                                                 "j = Test analog \n"
+//                                                 "k = Encoder Test \n"
+//                                                 "l = Calibrate Shutter \n"
+//                                                 "m = Calibrate Sensor \n"
+//                                                 "n = Read Sensor \n"
+//                                                 "o = Print Values \n"
+//                                                 "q = Direction Toggle \n"
+//                                                 "r = Turn on interrupt \n"
+//                                                 "s = Turn off interrupt \n"
+//                                                 "t = Toggle Capture \n"
+//                                                 "u = Homing \n"
+//                                                 "v = Test button \n"
+//                                                 "x = Test LED \n"
+//                                                 "z = Start stop toggle \n";
 
                 break;
     case 'b':
-        notificationString = "Start moving forward";
+        projectorNotificationString = "Start moving forward";
         break;
 
     case 'c':
-        notificationString = "Start moving backward";
+        projectorNotificationString = "Start moving backward";
         break;
 
     case 'd':
-        notificationString = "Stopping";
+        projectorNotificationString = "Stopping";
         break;
 
     case 'e':
-        notificationString = "One frame";
+        projectorNotificationString = "One frame";
         break;
 
     case 'f':
-        notificationString = "Hundred Frames";
+        projectorNotificationString = "Hundred Frames";
         break;
 
     case 'g':
-        notificationString = "Loading";
+        projectorNotificationString = "Loading";
         break;
 
     case 'h':
-        notificationString = "Test";
+        projectorNotificationString = "Test";
         break;
 
     case 'i':
-        notificationString = "Test digital";
+        projectorNotificationString = "Test digital";
         break;
 
     case 'j':
-        notificationString = "Test analog";
+        projectorNotificationString = "Test analog";
         break;
 
     case 'k':
-        notificationString = "Encoder test";
+        projectorNotificationString = "Encoder test";
         break;
 
     case 'l':
-        notificationString = "Calibrate shutter";
+        projectorNotificationString = "Calibrate shutter";
         break;
 
     case 'm':
-        notificationString = "Calibrate sensor";
+        projectorNotificationString = "Calibrate sensor";
         break;
 
     case 'n':
-        notificationString = "Read sensor";
+        projectorNotificationString = "Read sensor";
         break;
 
     case 'o':
-        notificationString = "Print values";
+        projectorNotificationString = "Print values";
         break;
 
     case 'p':
-        notificationString = "Test acceleration";
+        projectorNotificationString = "Test acceleration";
         break;
 
     case 'q':
-        notificationString = "Direction Toggle";
+        projectorNotificationString = "Direction Toggle";
         break;
 
     case 'r':
-        notificationString = "Turn on interrupt";
+        projectorNotificationString = "Turn on interrupt";
         break;
 
     case 's':
-        notificationString = "Turn off interrupt";
+        projectorNotificationString = "Turn off interrupt";
         break;
 
     case 't':
-        notificationString = "Toggle Capture";
+        projectorNotificationString = "Toggle Capture";
         break;
 
     case 'u':
-        notificationString = "Homing";
+        projectorNotificationString = "Homing";
         break;
 
     case 'x':
-        notificationString = "LEDS test";
+        projectorNotificationString = "LEDS test";
         break;
 
     case 'z':
-        notificationString = "Start Moving Toggle";
+        projectorNotificationString = "Start Moving Toggle";
         break;
 
     case '0':
-        //notificationString = "Frame";
-        notificationString = "0";
+        captureNotificationsString = "Frames processed:  " + ofToString(framesArrived);
         captureFrame();
         break;
-        }
+
     }
-    else {
-        incomingRequest = false;
-    }
+
 }
 
             // case 'v':

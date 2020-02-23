@@ -11,23 +11,28 @@ void ofApp::setupCamera(){
 
 bool ofApp::setupRecorder(){
 
-    cam.recorder.setPrefix(ofToDataPath("recording1/frame_")); // this directory must already exist
 
-//    cam.recorder.setPrefix(ofToDataPath(ofToString(path3) + "/" + ofToString(textfieldVal.get())));
-    cam.recorder.setFormat("tiff"); // png is really slow but high res, bmp is fast but big, jpg is just right
-    cam.recorder.setNumberWidth(5);
-    ofLog()<< "HEZ!";
+    path = path3.toString();
+    projectName = textfieldVal.toString();
+    if(emptyString.compare(path) == 0){
+        captureNotificationsString = "Capture directory not set";
+    }else{
+//        cam.recorder.setPrefix(ofToDataPath(path + "/" + projectName + "-")); // this directory must already exist
+        cam.recorder.setPrefix(path + "/" + projectName + "-"); // this directory must already exist
+        cam.recorder.setFormat("tiff"); // png is really slow but high res, bmp is fast but big, jpg is just right
+        cam.recorder.setNumberWidth(5);
+    }
+    captureNotificationsString = "Recorder setup";
+    recorderOk = true;
     return true;
 
 }
 
 
 void ofApp::captureFrame(){
-        if (recording){
-        //framePixels.allocate(cam.getWidth(), cam.getHeight(), OF_PIXELS_RGBA);
-
+        if (recorderOk){
             cam.recorder.addFrame(cam.getColorPixels());
-            //cam.recorder.
+            framesArrived +=1;
             ofLog() << "Frame captured";
 //            buff.begin();
 //            frameTexture = cam.getColorTexture();

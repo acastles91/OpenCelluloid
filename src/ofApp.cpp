@@ -12,25 +12,38 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    cam.update();
+
+
+    if (device.available()){
+//        deviceSz = device.readByte(serialCode);
+        incomingRequest = true;
+        updateSerial();
+    }
+    else {
+        incomingRequest = false;
+    }
+    //device.flushOutput();
+    //device.flushInput();
+
     if (markersBool){
             drawMarkers();
         }
-    updateSerial();
-
-   //
-    if (recording){
-        if (serial.readByte() == 0){
-            captureFrame();
-        }
-
-    }
 
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    cam.update();
+    if (!recording){
+        cam.drawColor(camX, camY, cam.getWidth() / 3, cam.getHeight() / 3);
+    }
+    if (recording){
+        if(serial.readByte() == 0){
+        cam.drawColor(camX, camY, cam.getWidth() / 3, cam.getHeight() / 3);
+        }
+    }
     cam.drawColor(camX, camY, cam.getWidth() / 3, cam.getHeight() / 3);
+
 }
 
 //--------------------------------------------------------------

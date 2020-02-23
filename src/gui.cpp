@@ -9,7 +9,9 @@ void ofApp::setupGui(){
     ofSetFrameRate(120);
     ofBackground(235, 235, 235);
     margin = 50;
-    notificationString = "Starting";
+    projectorNotificationString = "Starting";
+    captureNotificationsString = "Hey";
+    emptyString = "";
 
 //    //ofxGuiExtended
 //    //--------------------------------------------------------------
@@ -34,10 +36,12 @@ void ofApp::setupGui(){
 
     destination = containerLeft->add<ofxGuiButton>("Film destination", ofJson({{"type", "fullsize"}, {"text-align", "left"}}));
     destination->addListener(this, &ofApp::changeDestination);
-    path3.set("Directory", "");
+    path3.set("Directory", emptyString);
+
     homingStatus.set("Homing", "not executed");
     projectGroup->add(path3);
     projectGroup->add<ofxGuiTextField>(textfieldVal.set("Project Name", "Enter project name"));
+
 
     projectGroup->add(homingStatus);
 
@@ -111,7 +115,10 @@ void ofApp::setupGui(){
     notificationsGroup = projectPanel->addGroup("Notifications");
     //notificationsGroup->isChild(projectPanel);
     notificationsGroup->setShowHeader(0);
-    notificationsGroup->add(notificationString);
+    projectorNotificationsContainer = notificationsGroup->addContainer();
+    projectorNotificationsContainer->add(projectorNotificationString);
+    captureNotificationsContainer = notificationsGroup->addContainer();
+    captureNotificationsContainer->add(captureNotificationsString);
 //    //Stabilization paneln
 //    //--------------------------------------------------------------
 
@@ -145,7 +152,6 @@ void ofApp::setupGui(){
     //speedControlPanel->setPosition(projectGroup->getX() + margin, projectGroup->getHeight() + margin + 50);
     //speedControlPanel->setWidth(projectPanel->getWidth());
     notificationsGroup->setHeight(projectPanel->getHeight() - notificationsGroup->getY());
-
 
 
 //    //Speed selector
@@ -188,6 +194,16 @@ void ofApp::setupGui(){
     directionP->add(directionParameter, ofJson({{"type", "fullsize"}, {"text-align", "center"}}));
     directionP->setPosition(startStopP->getX() + startStopP->getWidth(), startStopP->getY());
     directionParameter.addListener(this, &ofApp::directionSwitch);
+
+    homingP = controlGroup->addPanel();
+    homingP->setBackgroundColor(ofColor::lightGray);
+    homingP->setShowHeader(false);
+    homingP->setWidth(80.0f);
+    homingParameter.set("Homing", true);
+    homingP->add(homingParameter, ofJson({{"type", "fullsize"}, {"text-align", "center"}}));
+    homingP->setPosition(directionP->getX() + directionP->getWidth(), directionP->getY());
+    homingParameter.addListener(this, &ofApp::homingToggle);
+
 
     captureP = controlGroup->addPanel();
     captureP->setBackgroundColor(ofColor::orange);
@@ -303,14 +319,6 @@ void ofApp::startStop(bool &)
     cout << "Backward" << std::endl;
     std::string code{};
 
-//    if (!startStopBool){
-//        startStopParameter.setName("Start");
-//        code = "d";
-//    }else{
-//        startStopParameter.setName("Stop");
-//        code = "b";
-//    }
-
     if (!startStopBool){
         startStopParameter.setName("Start");
     }else{
@@ -362,24 +370,41 @@ void ofApp::directionSwitch(bool &)
 
 //--------------------------------------------------------------
 
+void ofApp::homingToggle(bool &)
+{
+    homingBool = !homingBool;
+    std::string code{};
+
+    if (!incomingRequest){
+    code = 'u';
+    ofx::IO::ByteBuffer codeBuffer(code);
+
+    device.writeBytes(codeBuffer);
+    codeBuffer.empty();
+}
+}
+
+//--------------------------------------------------------------
+
+
 void ofApp::capture(bool &)
 {
     captureBool = !captureBool;
-    recording = !recording;
+
     if (captureBool){
         setupRecorder();
         cam.recorder.startThread();
+        ofLog() << "Recorder set up correctly " + path + " " + projectName;
         }
     else if(!captureBool)
         if(cam.recorder.isThreadRunning()){
-        cam.recorder.stopThread();
+            //cam.recorder.stopThread();
     }
+    recording = !recording;
     if (!incomingRequest){
         std::string code{};
         code = 't';
         ofx::IO::ByteBuffer codeBuffer(code);
-
-        //device.writeBytes(codeBuffer);
         device.writeBytes(codeBuffer);
         codeBuffer.empty();
     }
