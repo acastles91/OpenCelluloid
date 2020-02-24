@@ -93,15 +93,26 @@ void ofApp::updateSerial(){
         break;
 
     case 'g':
-        projectorNotificationString = "Loading";
+        projectorNotificationString = "Toggle Mode";
+        //changeMode(true);
+        //mode = true;
+        ofLog() << "Toggle mode";
+
         break;
 
     case 'h':
-        projectorNotificationString = "Test";
+        projectorNotificationString = "Mode 1";
+        modeIndex = 0;
+        setMode(modeIndex);
+        ofLog() << "Mode 1";
         break;
 
     case 'i':
-        projectorNotificationString = "Test digital";
+        projectorNotificationString = "Mode 2";
+        modeIndex = 1;
+        setMode(modeIndex);
+        ofLog() << "Mode 2";
+
         break;
 
     case 'j':
@@ -113,7 +124,7 @@ void ofApp::updateSerial(){
         break;
 
     case 'l':
-        projectorNotificationString = "Calibrate shutter";
+        projectorNotificationString = "Set speed OF";
         break;
 
     case 'm':
@@ -154,6 +165,11 @@ void ofApp::updateSerial(){
 
     case 'x':
         projectorNotificationString = "LEDS test";
+        break;
+
+    case 'y':
+        projectorNotificationString = "Set speed toggle";
+
         break;
 
     case 'z':

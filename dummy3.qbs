@@ -13,12 +13,11 @@ Project{
 
         files: [
             "src/serial.cpp",
-            'src/camera.cpp',
-            'src/gui.cpp',
-            'src/main.cpp',
-            'src/ofApp.cpp',
-            'src/ofApp.h',
-
+            "src/camera.cpp",
+            "src/gui.cpp",
+            "src/main.cpp",
+            "src/ofApp.cpp",
+            "src/ofApp.h",
         ]
 
         of.addons: [

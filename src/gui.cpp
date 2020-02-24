@@ -12,6 +12,8 @@ void ofApp::setupGui(){
     projectorNotificationString = "Starting";
     captureNotificationsString = "Hey";
     emptyString = "";
+    directionBool = true;
+    mode = true;
 
 //    //ofxGuiExtended
 //    //--------------------------------------------------------------
@@ -34,14 +36,14 @@ void ofApp::setupGui(){
     containerLeft->setWidth(50.0f);
     containerLeft->setPosition(0,0);
 
-    destination = containerLeft->add<ofxGuiButton>("Film destination", ofJson({{"type", "fullsize"}, {"text-align", "left"}}));
+    destination = containerLeft->add<ofxGuiButton>("Film destination", ofJson({{"type", "fullsize"}, {"text-align", "center"}}));
+
     destination->addListener(this, &ofApp::changeDestination);
     path3.set("Directory", emptyString);
 
-    homingStatus.set("Homing", "not executed");
+    homingStatus.set("Homing not executed");
     projectGroup->add(path3);
     projectGroup->add<ofxGuiTextField>(textfieldVal.set("Project Name", "Enter project name"));
-
 
     projectGroup->add(homingStatus);
 
@@ -59,9 +61,6 @@ void ofApp::setupGui(){
 
 //    speedControlContainer = speedControlGroup->addContainer();
 //    speedControlContainer->setBackgroundColor(ofColor::lightGray);
-//    speedControlContainer->add(speed1.set("Speed 1", 0.5, 0.1, 1), ofJson({{"precision", 1}}));
-//    speedControlContainer->add(speed2.set("Speed 2", 0.5, 0.1, 1), ofJson({{"precision", 1}}));
-
 
     //speedControlPanel = gui2.addPanel();
     //speedControlPanel->setShowHeader(false);
@@ -74,8 +73,11 @@ void ofApp::setupGui(){
 
     speedControlContainer = speedControlGroup->addContainer();
     speedControlContainer->setBackgroundColor(ofColor::lightGray);
-    speedControlContainer->add(speed1.set("Speed 1", 0.5, 0.1, 1), ofJson({{"precision", 1}}));
-    speedControlContainer->add(speed2.set("Speed 2", 0.5, 0.1, 1), ofJson({{"precision", 1}}));
+    //speedControlContainer->add(speedProjector.set("Speed", 1, 1, 4), ofJson({{"precision", 1}}));
+    //speedControlContainer->add<ofxGuiButton>("Change Speed", ofJson({{"type", "fullsize"}, {"text-align", "center"}}));
+
+
+    //speedControlContainer->add(speed2.set("Speed 2", 0.5, 0.1, 1), ofJson({{"precision", 1}}));
 
 
 //    //markers group
@@ -157,16 +159,21 @@ void ofApp::setupGui(){
 //    //Speed selector
 //    //--------------------------------------------------------------
 
-    speedParameters.add(speedParameter1.set("Speed 1", true));
-    speedParameters.add(speedParameter2.set("Speed 2", false));
+    speedParameters.add(speedParameter1.set("Mode 1", mode));
+    speedParameters.add(speedParameter2.set("Mode 2", !mode));
+
     speedPanel = gui2.addPanel();
     speedPanel->setShowHeader(false);
     speedPanel->setBackgroundColor(ofColor::darkGray);
     speedGroup = speedPanel ->addGroup(speedParameters);
-    speedGroup->setShowHeader(0);
-    speedGroup->setExclusiveToggles(1);
-    speedGroup->setConfig(ofJson({{"type", "fullsize"}, {"direction", "horizontal"}}));
 
+
+    speedGroup->setShowHeader(0);
+    speedGroup->setExclusiveToggles(true);
+    speedGroup->setConfig(ofJson({{"type", "radio"}, {"direction", "horizontal"}}));
+
+    speedGroup->getActiveToggleIndex().addListener(this, &ofApp::setMode);
+    speedGroup->setActiveToggle(0);
 //    //Projector control
 //    //--------------------------------------------------------------
 
@@ -211,17 +218,40 @@ void ofApp::setupGui(){
     captureP->setWidth(80.0f);
     captureParameter.set("Capture", false);
     captureP->add(captureParameter, ofJson({{"type", "fullsize"}, {"text-align", "center"}}));
-    captureP->setPosition(directionP->getX() + directionP->getWidth(), directionP->getY());
+    captureP->setPosition(homingP->getX() + homingP->getWidth(), homingP->getY());
     captureParameter.addListener(this, &ofApp::capture);
+
+    changeSpeedP = controlGroup->addPanel();
+    changeSpeedP->setBackgroundColor(ofColor::lightGray);
+    changeSpeedP->setShowHeader(false);
+    changeSpeedP->setWidth(80.0f);
+    changeSpeedParameter.set("Change Speed", true);
+    changeSpeedP->add(changeSpeedParameter, ofJson({{"type", "fullsize"}, {"text-align", "center"}}));
+    changeSpeedP->setPosition(captureP->getX() + captureP->getWidth(), captureP->getY());
+    changeSpeedParameter.addListener(this, &ofApp::setSpeed  );
+
+
+    changeSpeedSliderP = controlGroup->addPanel();
+    changeSpeedSliderP->setBackgroundColor(ofColor::lightGray);
+    changeSpeedSliderP->setShowHeader(false);
+    changeSpeedSliderP->setWidth(160.0f);
+    changeSpeedSliderP->add(speed1.set("Speed", 1, 1, 4), ofJson({{"precision", 1}}));
+    changeSpeedP->setPosition(changeSpeedP->getX() + changeSpeedP->getWidth(), changeSpeedP->getY());
+
+
 
 //    //Size and layout
 //    //--------------------------------------------------------------
 
-    controlPanel->setPosition(ofGetWidth()/2 - controlPanel->getWidth() / 2, ofGetHeight() - 200);
-    speedPanel->setPosition(ofGetWidth()/2 - speedPanel->getWidth() / 2, controlPanel->getY() - 50);
+//    controlPanel->setPosition(ofGetWidth()/2 - controlPanel->getWidth() / 2, ofGetHeight() - 200);
+//    speedPanel->setPosition(ofGetWidth()/2 - speedPanel->getWidth() / 2, controlPanel->getY() - 50);
+
 
     camX = ofGetWidth() - 1280 - projectPanel->getX();
     camY = projectPanel->getY();
+
+    controlPanel->setPosition( camX + cam.getWidth() / 2 - (controlPanel->getWidth() / 2) + (1280 / 2), ofGetHeight() - 200);
+    speedPanel->setPosition( camX + cam.getWidth() / 2 - (speedPanel->getWidth() / 2) + (1280 / 2), controlPanel->getY() - 50);
 
 }
 
@@ -316,9 +346,9 @@ void ofApp::markersCall(bool &){
 void ofApp::startStop(bool &)
 {
     startStopBool = !startStopBool;
-    cout << "Backward" << std::endl;
     std::string code{};
 
+    homingStatus.set("Homing not executed");
     if (!startStopBool){
         startStopParameter.setName("Start");
     }else{
@@ -356,15 +386,7 @@ void ofApp::directionSwitch(bool &)
 
     device.writeBytes(codeBuffer);
     codeBuffer.empty();
-}
-
-//    cout << "Backward" << std::endl;
-//    if (){
-//
-//    }else{
-//        directionParameter.setName("Forward");
-//    }
-//    serial.writeString("c");
+    }
 
 }
 
@@ -373,6 +395,7 @@ void ofApp::directionSwitch(bool &)
 void ofApp::homingToggle(bool &)
 {
     homingBool = !homingBool;
+
     std::string code{};
 
     if (!incomingRequest){
@@ -381,7 +404,8 @@ void ofApp::homingToggle(bool &)
 
     device.writeBytes(codeBuffer);
     codeBuffer.empty();
-}
+    homingStatus.set("Homing executed");
+    }
 }
 
 //--------------------------------------------------------------
@@ -414,4 +438,92 @@ void ofApp::capture(bool &)
 //--------------------------------------------------------------
 
 
+void ofApp::changeMode(bool &)
+{
+//    mode = !mode;
 
+//    if (!mode){
+//            speedParameter1.set(false);
+//        }
+//    else{
+//            speedParameter1.set(true);
+//        }
+//    if (!incomingRequest){
+//        std::string code{};
+//        code = 'g';
+//        ofx::IO::ByteBuffer codeBuffer(code);
+//        device.writeBytes(codeBuffer);
+//        codeBuffer.empty();
+//    }
+
+}
+
+//--------------------------------------------------------------
+
+
+void ofApp::setMode(int& val){
+
+
+   std::string code{};
+
+   switch (val){
+   case 0:
+       speedParameter1.set(true);
+       speedParameter2.set(false);
+       mode = true;
+
+       code = 'h';
+       break;
+    case 1:
+
+       speedParameter1.set(false);
+       speedParameter2.set(true);
+       mode = false;
+
+       code = 'i';
+       break;
+   }
+
+if (!incomingRequest){
+
+    ofx::IO::ByteBuffer codeBuffer(code);
+    device.writeBytes(codeBuffer);
+    codeBuffer.empty();
+    }
+};
+
+void ofApp::setSpeed(bool &){
+
+    std::string code{};
+    code = 'l';
+    ofx::IO::ByteBuffer codeBuffer(code);
+    device.writeBytes(codeBuffer);
+    codeBuffer.empty();
+
+    if (incomingRequest){
+        std::size_t sz = device.readByte(serialCode);
+        if(serialCode == 'l'){
+            int speedToSet = speed1.get();
+            code = speedToSet;
+            ofx::IO::ByteBuffer codeBuffer(code);
+            device.writeBytes(codeBuffer);
+            codeBuffer.empty();
+        }
+    }
+
+
+}
+void ofApp::changeSpeedFunction(bool &)
+{
+
+    if (!incomingRequest){
+        std::string code{};
+        code = 'f';
+        ofx::IO::ByteBuffer codeBuffer(code);
+        device.writeBytes(codeBuffer);
+        codeBuffer.empty();
+    }
+
+}
+
+//--------------------------------------------------------------

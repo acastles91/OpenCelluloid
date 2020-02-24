@@ -24,7 +24,9 @@ public:
                              *startStopP,
                              *directionP,
                              *homingP,
-                             *captureP;
+                             *captureP,
+                             *changeSpeedP,
+                             *changeSpeedSliderP;
 
         ofxGuiContainer      *containerLeft,
                              *containerRight,
@@ -59,6 +61,7 @@ public:
 
          ofxGuiButton*       destination,
                              homing,
+                             changeSpeed,
                              drawMarkersB;  //check drawMarkersB
 
 
@@ -87,6 +90,7 @@ public:
                                  parameter720p,
                                  parameterCenter,
                                  drawMarkersParameter,
+                                 changeSpeedParameter,
     //    //check all these
     //    //_______________________________________________
 
@@ -105,10 +109,11 @@ public:
                                  homingBool;
     //     //_______________________________________________
 
-         ofParameter<float>     speed1,
-                                speed2;
+         ofParameter<float>     speed2;
+         ofParameter<int>       speed1;
 
-         ofParameter<int>       shutterPosition;
+         ofParameter<int>       shutterPosition,
+                                speedProjector;
 
          //booleans, check all
          //--------------------------------------------------------------
@@ -147,6 +152,7 @@ public:
          bool    incomingRequest;
          uint8_t serialCode;
          std::size_t deviceSz;
+         int modeIndex;
 
     //     //ofxCv
     //     //--------------------------------------------------------------
@@ -174,6 +180,8 @@ public:
          ofPixels framePixels;
          ofFbo buff;
          ofTexture frameTexture;
+
+         bool mode;
 
 
     //     //funciones básicas
@@ -209,12 +217,16 @@ public:
      void directionSwitch(bool &);
      void homingToggle(bool &);
      void capture(bool &);
+     void changeMode(bool &);
+     void changeSpeedFunction(bool &);
      void drawMarkers();
 
      //Serial
 
      void setupSerial();
      void updateSerial();
+     void setMode(int &);
+     void setSpeed(bool &);
 
 
 
@@ -238,6 +250,7 @@ public:
      void drawCamera();
      void captureFrame();
      void trigFrameCapture();
+
 
 //     void onNewMessage(std::string &message);
 
