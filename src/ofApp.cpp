@@ -8,10 +8,13 @@ void ofApp::setup(){
     setupGui();
     setupCamera();
     setupSerial();
+    setSpeed(mode);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+
+    cam.update();
 
 
     if (device.available()){
@@ -25,35 +28,34 @@ void ofApp::update(){
     //device.flushOutput();
     //device.flushInput();
 
-    if (markersBool){
-            drawMarkers();
-        }
+
+
 
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    cam.update();
-    if (!recording){
+
+//    if (!recording){
         cam.drawColor(camX, camY, cam.getWidth() / 3, cam.getHeight() / 3);
-    }
-    if (recording){
-        if(serial.readByte() == 0){
-        cam.drawColor(camX, camY, cam.getWidth() / 3, cam.getHeight() / 3);
-        }
-    }
-    cam.drawColor(camX, camY, cam.getWidth() / 3, cam.getHeight() / 3);
+//    }
+//    if (recording){
+//        if(serial.readByte() == 0){
+//        cam.drawColor(camX, camY, cam.getWidth() / 3, cam.getHeight() / 3);
+//        }
+//    }
+
+        if (markersBool){
+                drawMarkers(markersBool);
+            }
+
+
 
 }
-
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){ 
-        if(key == ' '){
-            captureFrame();
-        }
-        if(key == 'f'){
-            ofSetFullscreen(true);
-        }
+
+void ofApp::keyPressed(int key){
+
 
 }
 

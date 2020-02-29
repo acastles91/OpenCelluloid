@@ -101,15 +101,15 @@ void ofApp::updateSerial(){
         break;
 
     case 'h':
-        projectorNotificationString = "Mode 1";
-        modeIndex = 0;
+        projectorNotificationString = "Mode 2";
+        modeIndex = 1;
         setMode(modeIndex);
         ofLog() << "Mode 1";
         break;
 
     case 'i':
-        projectorNotificationString = "Mode 2";
-        modeIndex = 1;
+        projectorNotificationString = "Mode 1";
+        modeIndex = 0;
         setMode(modeIndex);
         ofLog() << "Mode 2";
 
@@ -179,6 +179,22 @@ void ofApp::updateSerial(){
     case '0':
         captureNotificationsString = "Frames processed:  " + ofToString(framesArrived);
         captureFrame();
+        break;
+
+    case '5':
+        speed1.set(1);
+        break;
+
+    case '6':
+        speed1.set(2);
+        break;
+
+    case '7':
+        speed1.set(3);
+        break;
+
+    case '8':
+        speed1.set(4);
         break;
 
     }

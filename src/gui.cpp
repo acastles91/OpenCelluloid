@@ -228,15 +228,16 @@ void ofApp::setupGui(){
     changeSpeedParameter.set("Change Speed", true);
     changeSpeedP->add(changeSpeedParameter, ofJson({{"type", "fullsize"}, {"text-align", "center"}}));
     changeSpeedP->setPosition(captureP->getX() + captureP->getWidth(), captureP->getY());
-    changeSpeedParameter.addListener(this, &ofApp::setSpeed  );
+    changeSpeedParameter.addListener(this, &ofApp::setSpeed);
 
 
     changeSpeedSliderP = controlGroup->addPanel();
     changeSpeedSliderP->setBackgroundColor(ofColor::lightGray);
     changeSpeedSliderP->setShowHeader(false);
     changeSpeedSliderP->setWidth(160.0f);
-    changeSpeedSliderP->add(speed1.set("Speed", 1, 1, 4), ofJson({{"precision", 1}}));
+    changeSpeedSliderP->add(speed1.set("Speed", 4, 1, 4), ofJson({{"precision", 1}}));
     changeSpeedP->setPosition(changeSpeedP->getX() + changeSpeedP->getWidth(), changeSpeedP->getY());
+
 
 
 
@@ -253,19 +254,28 @@ void ofApp::setupGui(){
     controlPanel->setPosition( camX + cam.getWidth() / 2 - (controlPanel->getWidth() / 2) + (1280 / 2), ofGetHeight() - 200);
     speedPanel->setPosition( camX + cam.getWidth() / 2 - (speedPanel->getWidth() / 2) + (1280 / 2), controlPanel->getY() - 50);
 
+
+
 }
 
-void ofApp::drawMarkers(){
+void ofApp::drawMarkers(bool &){
 
         if(parameter4k){
             //ofEnableAlphaBlending();
             ofSetColor(ofColor::red);
             ofNoFill();
-            ofSetLineWidth(20);
+            ofSetLineWidth(2);
+            //ofPushMatrix();
+            //ofTranslate(camX + ((cam.getWidth() / 3) / 2), camY + ((cam.getHeight() / 3) / 2));
+//            ofDrawRectangle(-((cam.getWidth() / 3) / (3840.0f / 2048.0f) / 2), -((cam.getHeight() / 3) / (3840.0f / 2048.0f)) / 2, (cam.getWidth() / 3) / (3840.0f / 2048.0f), (cam.getHeight() / 3) / (3840.0f / 2048.0f));
+
+
             ofDrawRectangle(camX, camY, cam.getWidth() / 3, cam.getHeight() / 3);
+
             ofDrawBitmapString(ofToString(cam.getWidth()) + " x " + ofToString(cam.getHeight()),camX + (cam.getWidth() / 3) - 90, camY + (cam.getHeight() / 3) + 12);
             ofSetColor(ofColor::white);
-            cout << "Red" << endl;
+            //ofPopMatrix();
+
         }
 
         if (parameter2k){
@@ -273,7 +283,7 @@ void ofApp::drawMarkers(){
             //ofEnableAlphaBlending();
             ofSetColor(ofColor::green);
             ofNoFill();
-            ofSetLineWidth(20);
+            ofSetLineWidth(2);
             ofPushMatrix();
             ofTranslate(camX + ((cam.getWidth() / 3) / 2), camY + ((cam.getHeight() / 3) / 2));
             ofDrawRectangle(-((cam.getWidth() / 3) / (3840.0f / 2048.0f) / 2), -((cam.getHeight() / 3) / (3840.0f / 2048.0f)) / 2, (cam.getWidth() / 3) / (3840.0f / 2048.0f), (cam.getHeight() / 3) / (3840.0f / 2048.0f));
@@ -287,7 +297,7 @@ void ofApp::drawMarkers(){
             //ofEnableAlphaBlending();
             ofSetColor(ofColor::yellow);
             ofNoFill();
-            ofSetLineWidth(20);
+            ofSetLineWidth(2);
             ofPushMatrix();
             ofTranslate(camX + ((cam.getWidth() / 3) / 2), camY + ((cam.getHeight() / 3) / 2));
             ofDrawRectangle(-((cam.getWidth() / 3) / (3840.0f / 1920.0f) / 2), -((cam.getHeight() / 3) / (3840.0f / 1920.0f)) / 2, (cam.getWidth() / 3) / (3840.0f / 1920.0f), (cam.getHeight() / 3) / (3840.0f / 1920.0f));
@@ -300,7 +310,7 @@ void ofApp::drawMarkers(){
 
             ofSetColor(ofColor::purple);
             ofNoFill();
-            ofSetLineWidth(20);
+            ofSetLineWidth(2);
             ofPushMatrix();
             ofTranslate(camX + ((cam.getWidth() / 3) / 2), camY + ((cam.getHeight() / 3) / 2));
             ofDrawRectangle(-((cam.getWidth() / 3) / (3840.0f / 1280.0f) / 2), -((cam.getHeight() / 3) / (3840.0f / 1280.0f)) / 2, (cam.getWidth() / 3) / (3840.0f / 1280.0f), (cam.getHeight() / 3) / (3840.0f / 1280.0f));
@@ -315,7 +325,7 @@ void ofApp::drawMarkers(){
 
             ofSetColor(ofColor::blue);
             ofNoFill();
-            ofSetLineWidth(20);
+            ofSetLineWidth(2);
             ofPushMatrix();
             ofTranslate(camX + ((cam.getWidth() / 3) / 2), camY + ((cam.getHeight() / 3) / 2));
             ofDrawLine(-(cam.getWidth() / 3) / 2, 0, (cam.getWidth() / 3 / 2), 0);
@@ -472,7 +482,7 @@ void ofApp::setMode(int& val){
        speedParameter2.set(false);
        mode = true;
 
-       code = 'h';
+       //code = 'h';
        break;
     case 1:
 
@@ -480,11 +490,12 @@ void ofApp::setMode(int& val){
        speedParameter2.set(true);
        mode = false;
 
-       code = 'i';
+       //code = 'i';
        break;
    }
 
-if (!incomingRequest){
+    code = 'o';
+    if (!incomingRequest){
 
     ofx::IO::ByteBuffer codeBuffer(code);
     device.writeBytes(codeBuffer);
@@ -495,23 +506,33 @@ if (!incomingRequest){
 void ofApp::setSpeed(bool &){
 
     std::string code{};
-    code = 'l';
-    ofx::IO::ByteBuffer codeBuffer(code);
-    device.writeBytes(codeBuffer);
-    codeBuffer.empty();
+    switch (speed1.get()){
+    case 1:
+        code = '5';
+        break;
 
-    if (incomingRequest){
-        std::size_t sz = device.readByte(serialCode);
-        if(serialCode == 'l'){
-            int speedToSet = speed1.get();
-            code = speedToSet;
-            ofx::IO::ByteBuffer codeBuffer(code);
-            device.writeBytes(codeBuffer);
-            codeBuffer.empty();
-        }
+    case 2:
+        code = '6';
+        break;
+
+    case 3:
+        code = '7';
+        break;
+
+    case 4:
+        code = '8';
+        break;
     }
 
 
+
+    if (!incomingRequest){
+    ofx::IO::ByteBuffer codeBuffer(code);
+    device.writeBytes(codeBuffer);
+    codeBuffer.empty();
+    ofLog() << "Change speed: " + code;
+    ofLog() << code;
+    }
 }
 void ofApp::changeSpeedFunction(bool &)
 {
@@ -527,3 +548,5 @@ void ofApp::changeSpeedFunction(bool &)
 }
 
 //--------------------------------------------------------------
+
+

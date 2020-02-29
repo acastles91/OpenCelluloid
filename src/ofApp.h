@@ -4,6 +4,7 @@
 #include "ofxGuiExtended.h"
 #include "ofxBlackMagic.h"
 #include "ofxSerial.h"
+#include "ofxGrafica.h"
 
 //#include "ofxGui.h"
 
@@ -115,6 +116,18 @@ public:
          ofParameter<int>       shutterPosition,
                                 speedProjector;
 
+         //ofxGrafica
+         //--------------------------------------------------------------
+
+         ofxGPlot plot1, plot2, plot3;
+         vector<ofxGPoint> redHistPoints, greenHistPoints, blueHistPoints;
+         ofImage img;
+         ofPoint imgPos;
+         ofRectangle rect;
+         void calculateHistograms();
+         void drawGraphics();
+         void setupGraphics();
+
          //booleans, check all
          //--------------------------------------------------------------
 
@@ -219,7 +232,7 @@ public:
      void capture(bool &);
      void changeMode(bool &);
      void changeSpeedFunction(bool &);
-     void drawMarkers();
+     void drawMarkers(bool &);
 
      //Serial
 
