@@ -4,9 +4,8 @@
 void ofApp::setup(){
 
     recording = false;
-
-    setupGui();
     setupCamera();
+    setupGui();
     setupSerial();
     setSpeed(mode);
 }
@@ -37,7 +36,10 @@ void ofApp::update(){
 void ofApp::draw(){
 
 //    if (!recording){
-        cam.drawColor(camX, camY, cam.getWidth() / 3, cam.getHeight() / 3);
+        //cam.drawColor(camX, camY, cam.getWidth() / 3, cam.getHeight() / 3);
+        cam.drawColor(camX, camY, camWidth, camHeight);
+
+
 //    }
 //    if (recording){
 //        if(serial.readByte() == 0){
@@ -55,7 +57,9 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 
 void ofApp::keyPressed(int key){
-
+//    if (key == 'f'){
+//        OF_FULLSCREEN
+//    }
 
 }
 

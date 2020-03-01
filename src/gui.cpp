@@ -248,11 +248,15 @@ void ofApp::setupGui(){
 //    speedPanel->setPosition(ofGetWidth()/2 - speedPanel->getWidth() / 2, controlPanel->getY() - 50);
 
 
-    camX = ofGetWidth() - 1280 - projectPanel->getX();
+    //camX = ofGetWidth() - 1280 - projectPanel->getX();
+    camX = projectPanel->getX() + projectPanel->getWidth() + margin;
     camY = projectPanel->getY();
 
-    controlPanel->setPosition( camX + cam.getWidth() / 2 - (controlPanel->getWidth() / 2) + (1280 / 2), ofGetHeight() - 200);
-    speedPanel->setPosition( camX + cam.getWidth() / 2 - (speedPanel->getWidth() / 2) + (1280 / 2), controlPanel->getY() - 50);
+//    controlPanel->setPosition( camX + cam.getWidth() / 2 - (controlPanel->getWidth() / 2) + (1280 / 2), ofGetHeight() - 200);
+//    speedPanel->setPosition( camX + cam.getWidth() / 2 - (speedPanel->getWidth() / 2) + (1280 / 2), controlPanel->getY() - 50);
+
+    controlPanel->setPosition(camX + (camWidth /2) - controlPanel->getWidth() / 2, ofGetHeight() - 200);
+    speedPanel->setPosition( camX + (camWidth / 2) - (speedPanel->getWidth() / 2), controlPanel->getY() - 50);
 
 
 

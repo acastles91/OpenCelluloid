@@ -5,6 +5,8 @@ void ofApp::setupCamera(){
     ofSetLogLevel(OF_LOG_VERBOSE);
     cam.setup(bmdMode4K2160p30);
     ofClear(255,255,255, 0);
+    camWidth = ofGetWidth() / 1.33;
+    camHeight = ofGetHeight() / 1.33;
 
 }
 
