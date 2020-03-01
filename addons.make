@@ -1,3 +1,6 @@
 ofxBlackmagic
 ofxGuiExtended
-ofxSimpleSerial
+ofxSerial
+ofxPoco
+ofxIO
+ofxGrafica
